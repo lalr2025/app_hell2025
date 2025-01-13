@@ -2,8 +2,13 @@ import { View, Text, Button } from 'react-native';
 import * as Location from 'expo-location';
 import { useState } from 'react';
 
+type LocationCoords = {
+  latitude: number;
+  longitude: number;
+};
+
 export default function App() {
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState<LocationCoords | null>(null);
 
   async function getLocation() {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -12,7 +17,10 @@ export default function App() {
       return;
     }
     let loc = await Location.getCurrentPositionAsync({});
-    setLocation(loc.coords);
+    setLocation({
+      latitude: loc.coords.latitude,
+      longitude: loc.coords.longitude,
+    });
   }
 
   return (
